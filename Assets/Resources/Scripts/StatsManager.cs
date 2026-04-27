@@ -22,6 +22,6 @@ public class StatsManager : MonoBehaviour
 		player2WinsText.text = "Player 2 Wins: " + AppManager.instance.GetGameData(AppManager.PLAYER2_WINS_KEY);
 		drawsText.text = "Draws: " + AppManager.instance.GetGameData(AppManager.DRAWS_KEY);
 		gamesPlatedText.text = "Games Played: " + AppManager.instance.GetGameData(AppManager.GAME_PLAYED_KEY);
-		averageTimeText.text = "Average Time: " + AppManager.instance.GetGameData(AppManager.AVERAGE_TIME_KEY);
+		averageTimeText.text = "Average Time: " + AppManager.instance.GetGameData(AppManager.AVERAGE_TIME_KEY) + "s";
 	}
 }

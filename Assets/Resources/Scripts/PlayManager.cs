@@ -10,16 +10,28 @@ using UnityEngine.UI;
 
 public class PlayManager : MonoBehaviour
 {
-	int _movesPlayed = 0;
+	#region Properties
 
+	[Header("Grid")]
 	public Image[] gridCells;
 
+	[Header("Texts")]
 	public TextMeshProUGUI timerText;
+	public TextMeshProUGUI moveText;
 	public TextMeshProUGUI finisherText;
 
+	[Header("Images")]
+	public Image player1Symbol;
+	public Image player2Symbol;
+	public GameObject player1NextMove;
+	public GameObject player2NextMove;
 	public GameObject gamePanel;
 
+	[Header("Managers")]
 	public SettingsManager settingsManager;
+
+	[Header("Win Lines")]
+	public List<GameObject> _winLines = new List<GameObject>();
 
 	List<int> _xMoves = new List<int>();
 	List<int> _oMoves = new List<int>();
@@ -40,15 +52,27 @@ public class PlayManager : MonoBehaviour
 	Sprite _oSprite;
 
 	bool _isPlayingX = true;
+	bool _isGameOver = false;
 
+	int _movesPlayed = 0;
 	bool _isTimerOn = true;
 	float _timer = 0;
+
+	#endregion
+
+	#region Game Logic
 
 	private void Start()
 	{
 		var spriteSheetXO = Resources.LoadAll<Sprite>("Sprites/XO/XO-edit");
 		_xSprite = spriteSheetXO.First(x => x.name == "X_" + AppManager.instance.themeNumber.ToString());
 		_oSprite = spriteSheetXO.First(x => x.name == "O_" + AppManager.instance.themeNumber.ToString());
+
+		player1Symbol.sprite = AppManager.instance.isPlayer1X ? _xSprite : _oSprite;
+		player2Symbol.sprite = AppManager.instance.isPlayer1X ? _oSprite : _xSprite;
+
+		player1NextMove.SetActive(AppManager.instance.isPlayer1X ? true : false);
+		player2NextMove.SetActive(AppManager.instance.isPlayer1X ? false : true);
 	}
 
 	private void Update()
@@ -56,15 +80,15 @@ public class PlayManager : MonoBehaviour
 		if (_isTimerOn == true)
 		{
 			_timer += Time.deltaTime;
-			timerText.text = "Time: " + ((int)_timer).ToString();
+			timerText.text = "Time: " + ((int)_timer).ToString() + "s";
 		}
-	}
-
-	#region Game Logic
+	}	
 
 	public void SetSymbol(int cellPositon)
 	{
 		_movesPlayed++;
+		moveText.text = "Moves: " + _movesPlayed.ToString();
+
 		if (_isPlayingX)
 		{
 			_xMoves.Add(cellPositon);
@@ -79,32 +103,37 @@ public class PlayManager : MonoBehaviour
 		}
 
 		_isPlayingX = !_isPlayingX;
+		ToggleNextTurn();
 		gridCells[cellPositon - 1].GetComponent<Button>().interactable = false;
 	}
 
 	private void CheckForWin(List<int> moves)
 	{
-		if (_movesPlayed >= 5)
+		if (_movesPlayed >= 5 && !_isGameOver)
 		{
 			for (int i = 0; i < _winMoves.Count; i++)
 			{
 				if (_winMoves[i].All(x => moves.Contains(x)))
 				{
-					GameEnd(_isPlayingX == AppManager.instance.isPlayer1X ? "Player 1" : "Player 2");
+					SrikeAnimation(i);
+					StartCoroutine("GameEnd", _isPlayingX == AppManager.instance.isPlayer1X ? "Player 1" : "Player 2");
 					return;
 				}
 			}
 			if (_movesPlayed >= 9)
 			{
-				GameEnd("Draw");
+				StartCoroutine("GameEnd", "Draw");
 				return;
 			}
 		}
 	}
 
-	private void GameEnd(string finisher)
+	private IEnumerator GameEnd(string finisher)
 	{
-		string fullDescription = "Winner: ";
+		_isGameOver = true;
+		yield return new WaitForSeconds(0.75f);
+
+		string fullDescription = "";
 
 		int player1Wins = AppManager.instance.GetGameData(AppManager.PLAYER1_WINS_KEY);
 		int player2Wins = AppManager.instance.GetGameData(AppManager.PLAYER2_WINS_KEY);
@@ -115,14 +144,15 @@ public class PlayManager : MonoBehaviour
 		switch (finisher)
 		{
 			case "Player 1":
+				finisher += " Wins";
 				++player1Wins;
 				break;
 			case "Player 2":
+				finisher += " Wins";
 				++player2Wins;
 				break;
 			case "Draw":
 				++draws;
-				fullDescription = "";
 				break;
 		}
 
@@ -139,9 +169,20 @@ public class PlayManager : MonoBehaviour
 
 		fullDescription += finisher;
 		fullDescription += Environment.NewLine;
-		fullDescription += "Time: " + ((int)_timer).ToString();
+		fullDescription += "Time: " + ((int)_timer).ToString() + "s";
 
 		finisherText.text = fullDescription;
+	}
+
+	private void SrikeAnimation(int winMovesIndex)
+	{
+		_winLines[winMovesIndex].SetActive(true);
+	}
+
+	private void ToggleNextTurn()
+	{
+		player1NextMove.SetActive(!player1NextMove.activeSelf);
+		player2NextMove.SetActive(!player2NextMove.activeSelf);
 	}
 
 	#endregion

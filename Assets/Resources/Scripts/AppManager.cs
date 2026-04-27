@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public class AppManager : MonoBehaviour
 {
+	#region Properties
+
 	public const int MENU_SCENE = 0;
 	public const int GAME_SCENE = 1;
 
@@ -28,6 +30,9 @@ public class AppManager : MonoBehaviour
 
 	public AudioMixer audioMixer;
 
+	#endregion
+
+	#region Instance
 	private void Awake()
 	{
 		if (instance != null && instance != this)
@@ -46,6 +51,8 @@ public class AppManager : MonoBehaviour
 		isMusicOn = true;
 		isSfxOn = true;
 	}
+
+	#endregion
 
 	#region Saving Game Data
 
