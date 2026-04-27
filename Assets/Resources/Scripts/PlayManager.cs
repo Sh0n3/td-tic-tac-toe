@@ -73,6 +73,19 @@ public class PlayManager : MonoBehaviour
 
 		player1NextMove.SetActive(AppManager.instance.isPlayer1X ? true : false);
 		player2NextMove.SetActive(AppManager.instance.isPlayer1X ? false : true);
+
+		switch(AppManager.instance.themeNumber)
+		{
+			case 1:
+				Camera.main.backgroundColor = new Color(1f, 0.62f, 0.41f);
+				break;
+			case 2:
+				Camera.main.backgroundColor = new Color(1f, 0.41f, 0.58f);
+				break;
+			case 3:
+				Camera.main.backgroundColor = new Color(0.41f, 0.67f, 1f);
+				break;
+		}
 	}
 
 	private void Update()
