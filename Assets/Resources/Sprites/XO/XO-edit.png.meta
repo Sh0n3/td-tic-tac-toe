@@ -123,7 +123,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: XO-edit_0
+      name: X_1
       rect:
         serializedVersion: 2
         x: 39
@@ -131,7 +131,7 @@ TextureImporter:
         width: 86
         height: 103
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -144,7 +144,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: XO-edit_1
+      name: O_1
       rect:
         serializedVersion: 2
         x: 153
@@ -152,7 +152,7 @@ TextureImporter:
         width: 77
         height: 87
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -165,7 +165,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: XO-edit_2
+      name: X_2
       rect:
         serializedVersion: 2
         x: 39
@@ -173,7 +173,7 @@ TextureImporter:
         width: 95
         height: 116
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -186,7 +186,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: XO-edit_3
+      name: O_2
       rect:
         serializedVersion: 2
         x: 166
@@ -194,7 +194,7 @@ TextureImporter:
         width: 72
         height: 96
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -207,7 +207,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: XO-edit_4
+      name: X_3
       rect:
         serializedVersion: 2
         x: 39
@@ -215,7 +215,7 @@ TextureImporter:
         width: 68
         height: 86
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -228,7 +228,7 @@ TextureImporter:
       edges: []
       weights: []
     - serializedVersion: 2
-      name: XO-edit_5
+      name: O_3
       rect:
         serializedVersion: 2
         x: 156
@@ -236,7 +236,7 @@ TextureImporter:
         width: 71
         height: 87
       alignment: 0
-      pivot: {x: 0, y: 0}
+      pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
@@ -259,12 +259,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      XO-edit_0: -1664270123
-      XO-edit_1: 749337046
-      XO-edit_2: 1027959438
-      XO-edit_3: -1386949079
-      XO-edit_4: -1681503783
-      XO-edit_5: -1555875814
+      O_1: 749337046
+      O_2: -1386949079
+      O_3: -1555875814
+      X_1: -1664270123
+      X_2: 1027959438
+      X_3: -1681503783
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
