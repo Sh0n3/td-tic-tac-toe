@@ -39,11 +39,19 @@ public class MenuManager : MonoBehaviour
 
 	#region Settings Panel
 
-	// Load Settings
+	public void ToggleMusic()
+	{
+		AppManager.instance.isMusicOn = !AppManager.instance.isMusicOn;
+		AppManager.instance.ToggleAudio(AppManager.MUSIC_PARAMETER, AppManager.instance.isMusicOn);
+		settingsManager.UpdateMusicToggle();
+	}
 
-	// Turn Music On/Off
-
-	// Turn SFX On/Off
+	public void ToggleSfx()
+	{
+		AppManager.instance.isSfxOn = !AppManager.instance.isSfxOn;
+		AppManager.instance.ToggleAudio(AppManager.SFX_PARAMETER, AppManager.instance.isSfxOn);
+		settingsManager.UpdateSfxToggle();
+	}
 
 	#endregion
 

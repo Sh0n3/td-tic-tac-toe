@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class AppManager : MonoBehaviour
@@ -14,13 +15,18 @@ public class AppManager : MonoBehaviour
 	public const string GAME_PLAYED_KEY = "GamesPlayed";
 	public const string AVERAGE_TIME_KEY = "AverageTime";
 
+	public const string MUSIC_PARAMETER = "MusicVolume";
+	public const string SFX_PARAMETER = "SfxVolume";
+
 	public static AppManager instance;
 
 	public int themeNumber;
 	public bool isPlayer1X;
 
 	public bool isMusicOn;
-	public bool isSfxOn = true;
+	public bool isSfxOn;
+
+	public AudioMixer audioMixer;
 
 	private void Awake()
 	{
@@ -40,6 +46,8 @@ public class AppManager : MonoBehaviour
 		isMusicOn = true;
 		isSfxOn = true;
 	}
+
+	#region Saving Game Data
 
 	public void SaveGameData(int player1WinsValue, int player2WinsValue,
 		int drawsValue, int gamesPlayedValue, int avgTimeValue)
@@ -62,4 +70,21 @@ public class AppManager : MonoBehaviour
 		PlayerPrefs.DeleteAll();
 	}
 
+	#endregion
+
+	#region Audio Settings
+
+	public void ToggleAudio(string parameterName, bool isAudioOn)
+	{
+		if (isAudioOn) {
+			audioMixer.SetFloat(parameterName, 0f);
+		}
+		else
+		{
+			audioMixer.SetFloat(parameterName, -80f);
+		}
+	}
+
+
+	#endregion
 }

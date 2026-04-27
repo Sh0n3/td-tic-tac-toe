@@ -1,18 +1,40 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class SettingsManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+	public TextMeshProUGUI musicToggleText;
+	public TextMeshProUGUI sfxToggleText;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+	private void OnEnable()
+	{
+		UpdateMusicToggle();
+		UpdateSfxToggle();
+	}
+
+	public void UpdateMusicToggle()
+	{
+		if(AppManager.instance.isMusicOn)
+		{
+			musicToggleText.text = "On";
+		}
+		else
+		{
+			musicToggleText.text = "Off";
+		}
+	}
+
+	public void UpdateSfxToggle()
+	{
+		if (AppManager.instance.isSfxOn)
+		{
+			sfxToggleText.text = "On";
+		}
+		else
+		{
+			sfxToggleText.text = "Off";
+		}
+	}
 }

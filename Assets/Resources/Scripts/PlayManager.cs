@@ -10,50 +10,52 @@ using UnityEngine.UI;
 
 public class PlayManager : MonoBehaviour
 {
-    int _movesPlayed = 0;
+	int _movesPlayed = 0;
 
-    public Image[] gridCells;
+	public Image[] gridCells;
 
-    public TextMeshProUGUI timerText;
-    public TextMeshProUGUI finisherText;
+	public TextMeshProUGUI timerText;
+	public TextMeshProUGUI finisherText;
 
-    public GameObject gamePanel;
+	public GameObject gamePanel;
 
-    List<int> _xMoves = new List<int>();
-    List<int> _oMoves = new List<int>();
+	public SettingsManager settingsManager;
 
-    List<List<int>> _winMoves = new List<List<int>>()
-    {
-        { new List<int>(){ 1, 2, 3 } },
-        { new List<int>(){ 4, 5, 6 } },
-        { new List<int>(){ 7, 8, 9 } },
-        { new List<int>(){ 1, 4, 7 } },
-        { new List<int>(){ 2, 5, 8 } },
-        { new List<int>(){ 3, 6, 9 } },
-        { new List<int>(){ 1, 5, 9 } },
-        { new List<int>(){ 3, 5, 7 } },
-    };
+	List<int> _xMoves = new List<int>();
+	List<int> _oMoves = new List<int>();
 
-    Sprite _xSprite;
-    Sprite _oSprite;
+	List<List<int>> _winMoves = new List<List<int>>()
+	{
+		{ new List<int>(){ 1, 2, 3 } },
+		{ new List<int>(){ 4, 5, 6 } },
+		{ new List<int>(){ 7, 8, 9 } },
+		{ new List<int>(){ 1, 4, 7 } },
+		{ new List<int>(){ 2, 5, 8 } },
+		{ new List<int>(){ 3, 6, 9 } },
+		{ new List<int>(){ 1, 5, 9 } },
+		{ new List<int>(){ 3, 5, 7 } },
+	};
 
-    bool _isPlayingX = true;
+	Sprite _xSprite;
+	Sprite _oSprite;
 
-    bool _isTimerOn = true;
-    float _timer = 0;
+	bool _isPlayingX = true;
+
+	bool _isTimerOn = true;
+	float _timer = 0;
 
 	private void Start()
 	{
-        var spriteSheetXO = Resources.LoadAll<Sprite>("Sprites/XO/XO-edit");
-        _xSprite = spriteSheetXO.First(x => x.name == "X_" + AppManager.instance.themeNumber.ToString());
-        _oSprite = spriteSheetXO.First(x => x.name == "O_" + AppManager.instance.themeNumber.ToString());
+		var spriteSheetXO = Resources.LoadAll<Sprite>("Sprites/XO/XO-edit");
+		_xSprite = spriteSheetXO.First(x => x.name == "X_" + AppManager.instance.themeNumber.ToString());
+		_oSprite = spriteSheetXO.First(x => x.name == "O_" + AppManager.instance.themeNumber.ToString());
 	}
 
 	private void Update()
 	{
-        if (_isTimerOn == true)
-        {
-            _timer += Time.deltaTime;
+		if (_isTimerOn == true)
+		{
+			_timer += Time.deltaTime;
 			timerText.text = "Time: " + ((int)_timer).ToString();
 		}
 	}
@@ -61,36 +63,36 @@ public class PlayManager : MonoBehaviour
 	#region Game Logic
 
 	public void SetSymbol(int cellPositon)
-    {
-        _movesPlayed++;
-        if(_isPlayingX)
-        {
-            _xMoves.Add(cellPositon);
-            gridCells[cellPositon - 1].sprite = _xSprite;
+	{
+		_movesPlayed++;
+		if (_isPlayingX)
+		{
+			_xMoves.Add(cellPositon);
+			gridCells[cellPositon - 1].sprite = _xSprite;
 			CheckForWin(_xMoves);
 		}
-        else
-        {
+		else
+		{
 			_oMoves.Add(cellPositon);
 			gridCells[cellPositon - 1].sprite = _oSprite;
 			CheckForWin(_oMoves);
 		}
 
 		_isPlayingX = !_isPlayingX;
-		gridCells[cellPositon - 1].GetComponent<Button>().interactable = false;       
+		gridCells[cellPositon - 1].GetComponent<Button>().interactable = false;
 	}
 
-    private void CheckForWin(List<int> moves)
-    {
+	private void CheckForWin(List<int> moves)
+	{
 		if (_movesPlayed >= 5)
 		{
 			for (int i = 0; i < _winMoves.Count; i++)
-            {
-                if(_winMoves[i].All(x => moves.Contains(x)))
-                {
-                    GameEnd(_isPlayingX == AppManager.instance.isPlayer1X ? "Player 1" : "Player 2");
-                    return;
-                }
+			{
+				if (_winMoves[i].All(x => moves.Contains(x)))
+				{
+					GameEnd(_isPlayingX == AppManager.instance.isPlayer1X ? "Player 1" : "Player 2");
+					return;
+				}
 			}
 			if (_movesPlayed >= 9)
 			{
@@ -100,9 +102,9 @@ public class PlayManager : MonoBehaviour
 		}
 	}
 
-    private void GameEnd(string finisher)
-    {
-        string fullDescription = "Winner: ";
+	private void GameEnd(string finisher)
+	{
+		string fullDescription = "Winner: ";
 
 		int player1Wins = AppManager.instance.GetGameData(AppManager.PLAYER1_WINS_KEY);
 		int player2Wins = AppManager.instance.GetGameData(AppManager.PLAYER2_WINS_KEY);
@@ -111,14 +113,14 @@ public class PlayManager : MonoBehaviour
 		int avgTime = AppManager.instance.GetGameData(AppManager.AVERAGE_TIME_KEY);
 
 		switch (finisher)
-        {
-            case "Player 1":
+		{
+			case "Player 1":
 				++player1Wins;
 				break;
-            case "Player 2":
+			case "Player 2":
 				++player2Wins;
 				break;
-            case "Draw":
+			case "Draw":
 				++draws;
 				fullDescription = "";
 				break;
@@ -136,10 +138,10 @@ public class PlayManager : MonoBehaviour
 		_isTimerOn = false;
 
 		fullDescription += finisher;
-        fullDescription += Environment.NewLine;
-        fullDescription += "Time: " +((int)_timer).ToString();
+		fullDescription += Environment.NewLine;
+		fullDescription += "Time: " + ((int)_timer).ToString();
 
-        finisherText.text = fullDescription;
+		finisherText.text = fullDescription;
 	}
 
 	#endregion
@@ -168,6 +170,24 @@ public class PlayManager : MonoBehaviour
 	public void ClosePopup(GameObject popupPanel)
 	{
 		popupPanel.SetActive(false);
+	}
+
+	#endregion
+
+	#region Settings Panel
+
+	public void ToggleMusic()
+	{
+		AppManager.instance.isMusicOn = !AppManager.instance.isMusicOn;
+		AppManager.instance.ToggleAudio(AppManager.MUSIC_PARAMETER, AppManager.instance.isMusicOn);
+		settingsManager.UpdateMusicToggle();
+	}
+
+	public void ToggleSfx()
+	{
+		AppManager.instance.isSfxOn = !AppManager.instance.isSfxOn;
+		AppManager.instance.ToggleAudio(AppManager.SFX_PARAMETER, AppManager.instance.isSfxOn);
+		settingsManager.UpdateSfxToggle();
 	}
 
 	#endregion
