@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class MenuManager : MonoBehaviour
 {
+	public StatsManager statsManager;
+	public SettingsManager settingsManager;
 
 	#region Play Panel
 
@@ -27,14 +29,16 @@ public class MenuManager : MonoBehaviour
 
 	#region Stats Panel
 
-	// Load Stats
-
-	// Reset Stats
+	public void ResetStats()
+	{
+		AppManager.instance.ResetGameData();
+		statsManager.UpdateStats();
+	}
 
 	#endregion
 
 	#region Settings Panel
-	
+
 	// Load Settings
 
 	// Turn Music On/Off

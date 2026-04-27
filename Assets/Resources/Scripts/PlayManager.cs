@@ -82,22 +82,21 @@ public class PlayManager : MonoBehaviour
 
     private void CheckForWin(List<int> moves)
     {
-		if (_movesPlayed >= 5 && _movesPlayed < 9)
+		if (_movesPlayed >= 5)
 		{
 			for (int i = 0; i < _winMoves.Count; i++)
             {
-                if(moves.All(x => _winMoves[i].Contains(x)))
+                if(_winMoves[i].All(x => moves.Contains(x)))
                 {
                     GameEnd(_isPlayingX == AppManager.instance.isPlayer1X ? "Player 1" : "Player 2");
                     return;
                 }
 			}
-
-		}
-		else if (_movesPlayed >= 9)
-		{
-			GameEnd("Draw");
-			return;
+			if (_movesPlayed >= 9)
+			{
+				GameEnd("Draw");
+				return;
+			}
 		}
 	}
 
@@ -105,22 +104,38 @@ public class PlayManager : MonoBehaviour
     {
         string fullDescription = "Winner: ";
 
-        gamePanel.SetActive(true);
-		_isTimerOn = false;
+		int player1Wins = AppManager.instance.GetGameData(AppManager.PLAYER1_WINS_KEY);
+		int player2Wins = AppManager.instance.GetGameData(AppManager.PLAYER2_WINS_KEY);
+		int draws = AppManager.instance.GetGameData(AppManager.DRAWS_KEY);
+		int gamesPlayed = AppManager.instance.GetGameData(AppManager.GAME_PLAYED_KEY);
+		int avgTime = AppManager.instance.GetGameData(AppManager.AVERAGE_TIME_KEY);
 
-        switch(finisher)
+		switch (finisher)
         {
             case "Player 1":
-
+				++player1Wins;
 				break;
             case "Player 2":
-
+				++player2Wins;
 				break;
             case "Draw":
+				++draws;
 				fullDescription = "";
 				break;
-        }
-        fullDescription += finisher;
+		}
+
+		AppManager.instance.SaveGameData(
+			player1Wins,
+			player2Wins,
+			draws,
+			++gamesPlayed,
+			(avgTime == 0 ? (int)_timer : (avgTime + (int)_timer) / 2)
+		);
+
+		gamePanel.SetActive(true);
+		_isTimerOn = false;
+
+		fullDescription += finisher;
         fullDescription += Environment.NewLine;
         fullDescription += "Time: " +((int)_timer).ToString();
 
